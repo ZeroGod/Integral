@@ -1,0 +1,135 @@
+﻿@using LCS.WeiXin.Common
+
+@{
+    ViewBag.Title = "终端详情";
+}
+
+@section HeaderContent{
+    <link rel="stylesheet" type="text/css" href="/Content/integral/integralstyle.css?@Html.GetVersion()">
+}
+
+<div id="container">
+
+    @* 导航暂时不要<div id="wrapper" class="header-wrapper" style="border: 0;position: fixed;z-index: 10;">
+        <a class="logo home_btn-goback" href="javascript:history.go(-1);"><img src="/Images/back-icon.png"></a>
+        <div class="title"><a class="title" href="javascript:void(0)">终端详情</a></div>
+    </div>*@
+
+    <div class="item-mypage">
+        <div class="store borderline terminal">
+            <div class="terminal_img">
+                @if (!string.IsNullOrEmpty(Model.StorePic))
+                {
+                    <img class="img terminal_logo" src="@Model.StorePic">
+                }
+                else
+                {
+                    <img class="img terminal_logo" src="/Images/dpmr_2x.png">
+                }
+            </div>
+            <div class="ft14 terminal_info">
+                <p>终端编号：@Model.StoreCode</p>
+                <p>终端名称：@Model.Name</p>
+            </div>
+        </div>
+        <div class="helper borderline">
+            <span class="bold ft15">终端信息</span>
+            <div style="float: right; padding-right: 20px;">
+                <span class="ft12">信息有误</span>
+                <a style="text-decoration: none;" href="@Url.Action( "ChangeError", "Integral", new { storeId = Model.Id })"><span class="bold ft15">我要纠错</span></a>
+            </div>
+        </div>
+        <div class="store borderline">
+            <span class="ft14 terminal_item">
+                &#12288;负责人：@Model.ChargePerson
+            </span>
+        </div>
+        <div class="store borderline">
+            <span class="ft14 terminal_item">
+                联系方式：@Model.ChargePersonContact
+            </span>
+        </div>
+        <div class="store borderline">
+            <span class="ft14 terminal_item">
+                营业电话：@Model.BusinessTel
+            </span>
+        </div>
+        <div class="store borderline">
+            <span class="ft14 terminal_item">
+                经营年份：
+                @if (Model.FoundTime != null)
+                {
+                    <span>@Model.FoundTime.ToString("yyyy-MM-dd")</span>
+                }
+            </span>
+        </div>
+        <div class="store borderline">
+            <span class="ft14 terminal_item">
+                终端类型：@Model.StoreTypeName
+            </span>
+        </div>
+        <div class="store borderline">
+            <span class="ft14 terminal_item">
+                终端等级：@Model.LevelName
+            </span>
+        </div>
+        <div class="store borderline">
+            <span class="ft14 terminal_item">
+                地理归属：@Model.AreaTypeName
+            </span>
+        </div>
+        <div class="store borderline">
+            <span class="ft14 terminal_item">
+                营业面积：@Model.AreaSize
+            </span>
+        </div>
+        <div class="store borderline">
+            <span class="ft14 terminal_item">
+                最大库存：@Model.MaxStorage
+            </span>
+        </div>
+        <div class="store borderline">
+            <span class="ft14 terminal_item">
+                详细地址：@Model.Address
+            </span>
+        </div>
+        <div class="helper borderline">
+            <span class="bold ft15">合作信息</span>
+        </div>
+        <div class="store borderline">
+            <span class="ft14 terminal_item">
+                合作方式：@Model.CooperationTypeName
+            </span>
+        </div>
+        <div class="store borderline">
+            <span class="ft14 terminal_item">
+                &#12288;供货商：@Model.CoopOrgName
+            </span>
+        </div>
+        <div class="store borderline">
+            <span class="ft14 terminal_item">
+                备&#12288;&#12288;注：@Model.Remark
+            </span>
+        </div>
+        <div class="store borderline" style="margin-bottom: 40px;">
+            <span class="ft14 terminal_item">
+                拍&#12288;&#12288;照：
+                @if (!string.IsNullOrEmpty(Model.Files))
+                {
+                    <img src="@Model.Files" style="width: 50px; height: 50px; border-radius: 50%;" />
+                }
+                else
+                {
+                    <span>暂无</span>
+                }
+
+            </span>
+        </div>
+    </div>
+    
+    <div id="u11" style="z-index: 1000;">
+        <span class="ft11 w-bind--link">
+            <a class="ft14" style="text-decoration: none;display: block;" href="@Url.Action("Index", "Integral")"> 返回公众号首页</a>
+        </span>
+    </div>
+</div>

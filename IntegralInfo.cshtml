@@ -1,0 +1,92 @@
+﻿@using LCS.WeiXin.Common
+@{
+    ViewBag.Title = "积分";
+}
+@section HeaderContent{
+    <link rel="stylesheet" type="text/css" href="/Content/integral/integralstyle.css?@Html.GetVersion()">
+    <link rel="stylesheet" type="text/css" href="/Content/integral/iscroll-css.css">
+}
+@section scripts {
+    <script type="text/javascript" src="/ViewScript/integral/jquery-1.js"></script>
+    <script type="text/javascript" src="/ViewScript/integral/iscroll.js"></script>
+    <script type="text/javascript" src="/ViewScript/integral/integralsouce.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            zhongjiu.integral.getintegral().init({ methName: "userIntegral", interId:@Model.Id,storeId:@Model.StoreId });
+        });
+    </script>
+}
+
+<div id="container">
+
+   @* 导航暂时不要 <div id="wrapper" class="header-wrapper">
+        <a class="logo home_btn-goback" href="javascript:history.go(-1);"><img src="/Images/back-icon.png"></a>
+        <div class="title"><a class="title" href="javascript:void(0)">积分</a></div>
+    </div>*@
+
+    <div class="jf_header ax_shape">
+        <div id="u40" class="ax_shape">
+            <a href="@Url.Action("IntegralHelp", "Integral")">
+                <img  src="/Images/question.png" style="width: 35px; height: 35px;"/>
+            </a>
+        </div>
+        <div class="jf_user">
+
+            <p class="score">@Model.IntegralTotal</p>
+            <p class="label ft14">当前积分</p>
+        </div>
+
+        @* <div id="u18" class="ax_shape txtdir">
+                @if (string.IsNullOrEmpty(Model.StorePic))
+                {
+                    <img style="width: 50px; height: 50px;border-radius:50%;" id="u18_img" class="img" src="/Images/u41.png">
+                    <span class="ft14">@Model.Name</span>
+                }
+                else
+                {
+                    <img style="width: 50px; height: 50px;border-radius:50%;" id="u18_img" class="img" src="@Model.StorePic">
+                    <span class="padL10 ft14">@Model.Name</span>
+                }
+
+            </div>*@
+
+    </div>
+
+    <div class="helper borderline">
+        <span class="bold ft15">积分记录</span>
+    </div>
+
+    <div id="wrapperscroll" style="overflow: hidden; top: 165px;">
+        <div id="scroller">
+            <div id="pullDown" class=""></div>
+            <div class="bg-white" style="margin-bottom: 20px;">
+
+                @* <section class="mx-list">
+                        <div class="peo-rig">
+                            <div class="rank-rig-row1 clearfix">
+                                <p class="ft15 fl padL10 lef"> 订单：192029102</p>
+                                <p class="rt rig ft14">
+                                    + 50
+                                </p>
+                            </div>
+                            <div class="rank-rig-row2  w-gray88 clearfix">
+                                <p class="fl lef padL10 ft14">2017-02-5-03</p>
+                            </div>
+                        </div>
+                    </section>*@
+
+
+            </div>
+            <div id="pullUp" class=""></div>
+        </div>
+    </div>
+
+
+    <div id="u11" style="z-index: 1000;">
+        <span class="ft11 w-bind--link">
+            <a class="ft14" style="text-decoration: none;display: block;" href="@Url.Action("Index", "Integral")"> 返回公众号首页</a>
+        </span>
+    </div>
+
+
+</div>

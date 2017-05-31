@@ -1,0 +1,63 @@
+﻿@using LCS.WeiXin.Common
+@{
+    ViewBag.Title = "信息报错";
+}
+@section HeaderContent{
+    <link rel="stylesheet" type="text/css" href="/Content/integral/integralstyle.css?@Html.GetVersion()">
+}
+@section scripts {
+    <script type="text/javascript" src="/ViewScript/integral/jquery-1.js"></script>
+    <script type="text/javascript" src="/ViewScript/integral/Integral_error_change.js"></script>
+    <script type="text/javascript" src="/ViewScript/integral/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="/ViewScript/integral/integral_fileUpload.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $('#file').change(function () {
+                var file = this.files[0];
+                var r = new FileReader();
+                r.readAsDataURL(file);
+                $(r).load(function () {
+                    $('#showImg').html('<img src="' + this.result + '" style="width: 131px; height: 114px;"/>');
+                });
+            });
+        });
+    </script>
+}
+
+<div id="container">
+
+    <div id="zj_article" class="helper borderline" style="position: relative">
+        <span class="ft14" style="display: inline-block; margin-right: 10px;">错误项</span>
+        <span class="ft14 top-menu">
+            请选择信息有误的项目
+        </span>
+    </div>
+    <div class="store showDiv1 item-mypage" style="display: none;">
+
+        <span class="ft14" style="display: inline-block; margin-top: 10px; margin-bottom: 10px;">门头照 </span>
+        <div id="showImg"><img src="/Images/header-logo.png" style="width: 131px; height: 114px;" /></div>
+    </div>
+
+    <div class="store" style=" padding-right:30px;">
+        <span class="ft14" style="display: inline-block; margin-top: 10px; margin-bottom: 10px;">更正信息 </span>
+        <div><textarea name="txtarea" class="txtarea" placeholder="请输入正确的信息"></textarea></div>
+    </div>
+    <div class="store ft14 showDiv1 item-mypage" style="margin-top: 20px; display: none;">
+        <input id="title" type="hidden" value="终端信息有误" name="title" />
+        <input id="resultType" type="hidden" value="0" name="resultType" />
+        <input id="storeId" type="hidden" value="@ViewBag.storeId" name="storeId" />
+        <input id="file" accept="image/*" type="file" name="file" style="display: none;">
+        <a id="link_file" href="javascript:void(0)">
+            <img src="/Images/photo.png" style="vertical-align: bottom;" />请上传正确的照片
+        </a>
+    </div>
+    <div class="upload_btn">
+        <span class="ft11 w-bind--link">
+            <button class="ft14" type="button" style="display: block; background-color: #ccc;border-style :none; width: 100%; height: 30px;">确认上传</button>
+            @* <a id="submitChange" class="ft14" style="text-decoration: none; display: block;" href="">确认上传</a>*@
+        </span>
+    </div>
+    <div id="alertMessage" class="ft14" style="margin-top: 20px; color: red">
+    </div>
+</div>

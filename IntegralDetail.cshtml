@@ -1,0 +1,58 @@
+﻿@using LCS.WeiXin.Common
+@using LCS.WeiXin.Domain.Store
+@{
+    ViewBag.Title = "公众号积分查询";
+}
+@section HeaderContent{
+    <link rel="stylesheet" type="text/css" href="/Content/integral/integralstyle.css?@Html.GetVersion()">
+    <link rel="stylesheet" type="text/css" href="/Content/integral/iscroll-css.css">
+}
+@section scripts {
+
+    <script type="text/javascript" src="/ViewScript/integral/jquery-1.js"></script>
+    <script type="text/javascript" src="/ViewScript/integral/iscroll.js"></script>
+    <script type="text/javascript" src="/ViewScript/integral/integralsouce.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            zhongjiu.integral.getintegral().init({ methName: "userIntegral", interId:@ViewBag.interId,storeId:@ViewBag.storeId });
+
+        });
+    </script>
+}
+
+<div id="container">
+
+    <div id="wrapper" class="header-wrapper">
+        <a class="logo home_btn-goback" href="javascript:history.go(-1);"><img src="/Images/back-icon.png"></a>
+
+        <div class="title">
+            <a class="title" href="javascript:void(0)">明细</a>
+        </div>
+    </div>
+
+    <div id="wrapperscroll" style="overflow: hidden;">
+        <div id="scroller">
+            <div id="pullDown" class=""></div>
+            <div class="bg-white">
+
+               @* <section class="mx-list">
+                    <div class="peo-rig">
+                        <div class="rank-rig-row1 clearfix">
+                            <p class="ft15 fl padL10 lef"> 订单：192029102</p>
+                            <p class="rt rig ft14">
+                                + 50
+                            </p>
+                        </div>
+                        <div class="rank-rig-row2  w-gray88 clearfix">
+                            <p class="fl lef padL10 ft14">2017-02-5-03</p>
+                        </div>
+                    </div>
+                </section>*@
+
+            
+            </div>
+            <div id="pullUp" class=""></div>
+        </div>
+    </div>
+</div>

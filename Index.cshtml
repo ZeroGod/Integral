@@ -1,0 +1,132 @@
+﻿@using LCS.WeiXin.Common
+@using LCS.WeiXin.Domain.Store
+@{
+    ViewBag.Title = "我的主页";
+}
+@section HeaderContent{
+    <link rel="stylesheet" type="text/css" href="/Content/integral/integralstyle.css?@Html.GetVersion()">
+}
+@section scripts {
+    <script type="text/javascript" src="/ViewScript/integral/jquery-1.js"></script>
+    <script type="text/javascript" src="/ViewScript/integral/zjcommon.js"></script>
+}
+
+<div id="container">
+
+    @* 导航暂时不要   <div id="wrapper" class="header-wrapper">
+            <a class="logo home_btn-goback" href="javascript:void(0);"><img src="/Images/back-icon.png"></a>
+            <div class="title"><a class="title" href="javascript:void(0)">我的主页</a></div>
+        </div>*@
+
+    @if (ViewBag.storeInfoList != null && ViewBag.storeInfoList.Count > 0)
+    {
+        int i = 1;
+        string itemCss = string.Empty;
+        string displayDiv = string.Empty;
+        var htmlContent = string.Empty;//为了弹出层展示内容
+                                       //显示帐套名称，只显示第一个
+                                    <div id="zj_article" class="helper borderline" style="position: relative">
+                                        <span class="ft14 top-menu">
+                                            @ViewBag.storeInfoList[0].Name
+                                        </span>
+                                    </div>
+        foreach (StoreBaseDomain info in ViewBag.storeInfoList)
+        {
+            //要显示的名称
+            itemCss = "showDiv" + i.ToString();
+            //添加帐套到弹出层
+            htmlContent += "<p class='ft14 btnSure' showDiv='" + itemCss + "'>" + info.Name + "</p>";
+            if (i > 1)
+            {
+                //默认第一个名称显示
+                displayDiv = "display: none;";
+            }
+            <div class="item-mypage @itemCss" style="@displayDiv">
+                <div class="store borderline">
+                    <div class="logo_img">
+                        @if (!string.IsNullOrEmpty(info.StorePic))
+                        { <img class="img img_store" src="@info.StorePic"> }
+                        else
+                        {
+                            <img class="img img_store" src="/Images/dpmr_2x.png">
+                        }
+
+                    </div>
+                    <a href="@Url.Action( "TerminalInfo", "Integral", new { storeId = info.Id })">
+                        <div class="ft14 store_info">
+                            <p>终端名称：@info.Name</p>
+                            <p>
+                                <span class="user_tel">联系方式：@info.BusinessTel</span>
+                                <span style="margin-left: -8px;">
+                                    <img src="/Images/icon_111.png" style="width:16px;" />
+                                </span>
+                            </p>
+                            <p style="text-overflow: ellipsis;overflow:hidden;white-space:nowrap; ">详细地址：@info.Address</p>
+
+                        </div>
+                    </a>
+                </div>
+
+                <div class="store borderline">
+                    <a href="@Url.Action("IntegralInfo", "Integral", new {storeId = info.Id})">
+                        <div>
+                            <span class="ft14 item">
+                                <img src="/Images/my-integral.png" style="width: 30px; height: 30px;" />
+                                &nbsp;我的积分
+                            </span>
+                            <span class="ft14">
+                                <img src="/Images/icon_111.png" style="width: 16px;" />
+                            </span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="store borderline">
+                    <a href="@Url.Action("Index", "order", new {storeId = info.Id})">
+                        <div>
+                            <span class="ft14 item">
+                                <img src="/Images/my-order.png" style="width: 30px; height: 30px;" />
+                                &nbsp;我的订单
+                            </span>
+                            <span class="ft14">
+                                <img src="/Images/icon_111.png" style="width: 16px;" />
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            i++;
+        }
+        //触发弹出层事件
+        <script type="text/javascript">
+            $(function () {
+                $(".top-menu").on("click", function () {
+                    if ($(".openWrap").length > 0) {
+                        $(this).removeClass('dir_top');//为了改变箭头的方向
+                        $(".openWrap").remove();
+                    } else {
+                        $(this).addClass('dir_top');
+                        zhongjiu.integral.confirmNew().init({
+                            html: ("@Html.Raw(htmlContent)"),
+                            sure: function () {
+                            }
+                        });
+                    }
+
+                });
+
+            })
+        </script>
+    }
+    else
+    {
+        <div id="nolist">
+            <div class="tips" style="margin-top: 30px;">
+
+                你尚未绑定中酒云图帐套，暂时没有个人信息
+            </div>
+        </div>
+    }
+
+
+</div>

@@ -1,0 +1,145 @@
+﻿@using LCS.WeiXin.Common
+@{
+    ViewBag.Title = "信息报错";
+}
+@section HeaderContent{
+    <link rel="stylesheet" type="text/css" href="/Content/integral/integralstyle.css?@Html.GetVersion()">
+}
+@section scripts {
+    <script type="text/javascript" src="/ViewScript/integral/jquery-1.js"></script>
+    <script type="text/javascript" src="/ViewScript/integral/zjcommon.js"></script>
+    <script type="text/javascript">
+        var htmlContent =
+            "<p class='ft14 btnSure' showDiv='showDiv1'>门头照</p><p class='ft14 btnSure' showDiv='showDiv2'>供货商</p><p class='ft14 btnSure' showDiv='showDiv2'>终端名称</p><p class='ft14 btnSure' showDiv='showDiv3'>负责人</p>";
+        htmlContent +=
+            "<p class='ft14 btnSure' showDiv='showDiv2'>联系方式</p><p class='ft14 btnSure' showDiv='showDiv2'>营业电话</p><p class='ft14 btnSure' showDiv='showDiv2'>经营年份</p>";
+        htmlContent +=
+            "<p class='ft14 btnSure' showDiv='showDiv2'>终端类型</p><p class='ft14 btnSure' showDiv='showDiv2'>终端等级</p><p class='ft14 btnSure' showDiv='showDiv2'>地理归属</p>";
+        htmlContent +=
+            "<p class='ft14 btnSure' showDiv='showDiv2'>营业面积</p><p class='ft14 btnSure' showDiv='showDiv2'>最大库存</p><p class='ft14 btnSure' showDiv='showDiv2'>详细地址</p>";
+        $(function () {
+            $(".top-menu").on("click",
+                function () {
+                    if ($(".openWrap").length > 0) {
+                        $(this).removeClass('dir_top'); //为了改变箭头的方向
+                        $(".openWrap").remove();
+                    } else {
+                        $(this).addClass('dir_top');
+                        zhongjiu.integral.terminalInfo().init({
+                            html: (htmlContent),
+                            sure: function () {
+                            }
+                        });
+                    }
+                });
+            $("#link_file").on("click",
+                function () {
+                    $("#file").click();
+                });
+
+
+            $('#file').change(function () {
+                var file = this.files[0];
+                var r = new FileReader();
+                r.readAsDataURL(file);
+                $(r).load(function () {
+                    $('#showImg').html('<img src="' + this.result + '" style="width: 131px; height: 114px;"/>');
+                });
+            });
+
+            $(":button").on('click',
+                function () {
+                    $("#alertMessage").html("正在上传...");
+                    var fd = new FormData();
+                    fd.append("file", $("#file").get(0).files[0]);
+                    fd.append("storeId", $('#storeId').val());
+                    fd.append("title", $('#title').val());
+                    fd.append("txtarea", $('.txtarea').val());
+                    fd.append("resultType", $('#resultType').val());
+                    $.ajax({
+                        url: "/Integral/Upload",
+                        type: "POST",
+                        dataType: 'json',
+                        processData: false,
+                        contentType: false,
+                        data: fd,
+                        success: function (result) {
+                            if (result.type === -2) {
+                                $("#alertMessage").html("请填写更正信息或选择错误项");
+                            } else if (result.type === 0) {
+                                $("#alertMessage").html("信息上传成功，已通知业务员");
+                                setTimeout(function () {
+                                    var storeid = $('#storeId').val();
+                                    location.href = '/Integral/TerminalInfo?storeId=' + storeid;
+                                }, 1000);
+                            } else if (result.type === -1) {
+                                $("#alertMessage").html("通知信息失败");
+                            } else {
+                                $("#alertMessage").html("请求异常");
+                            }
+
+                        },
+                        error: function (data, status, e) //服务器响应失败处理函数
+                        {
+                            // alert(e);
+                        }
+                    });
+
+                });
+
+        });
+
+    </script>
+}
+
+<div id="container">
+
+    <div id="zj_article" class="helper borderline" style="position: relative">
+        <span class="ft14" style="display: inline-block; margin-right: 10px;">错误项</span>
+        <span class="ft14 top-menu">
+            请选择信息有误的项目
+        </span>
+    </div>
+    <div class="store showDiv1 item-mypage clearfix" style="display: none;">
+        <div style="float: left;">
+            <span class="ft14" style="display: inline-block; margin-top: 10px; margin-bottom: 10px;">门头照</span>
+            <div>
+                @if (!string.IsNullOrEmpty(ViewBag.storePic))
+                {
+                    <img src="@ViewBag.storePic" style="width: 131px; height: 114px;" />
+                }
+                else
+                {
+                    <img src="/Images/dpmr_2x.png" style="width: 131px; height: 114px;" />
+                }
+
+            </div>
+        </div>
+        <div style="float: right;">
+            <span class="ft14" style="display: inline-block; margin-top: 10px; margin-bottom: 10px;">修改照</span>
+            <div id="showImg"><img src="/Images/dpmr_2x.png" style="width: 131px; height: 114px;" /></div>
+        </div>
+    </div>
+
+    <div class="store" style=" padding-right:30px;">
+        <span class="ft14" style="display: inline-block; margin-top: 10px; margin-bottom: 10px;">更正信息 </span>
+        <div><textarea name="txtarea" class="txtarea" placeholder="请选择错误项,并在此输入更改的的信息"></textarea></div>
+    </div>
+    <div class="store ft14 showDiv1 item-mypage" style="margin-top: 20px; display: none;">
+        <input id="title" type="hidden" value="终端信息有误" name="title" />
+        <input id="resultType" type="hidden" value="0" name="resultType" />
+        <input id="storeId" type="hidden" value="@ViewBag.storeId" name="storeId" />
+        <input id="file" accept="image/*" type="file" name="file" style="display: none;">
+        <a id="link_file" href="javascript:void(0)">
+            <img src="/Images/photo.png" style="vertical-align: bottom;" />请上传正确的照片
+        </a>
+    </div>
+    <div class="upload_btn">
+     <button class="ft14" type="button" style="border-radius: 20px;display: block; background-color: #ccc;border-style :none; width: 100%; height: 40px;">确认上传</button>
+            @* <a id="submitChange" class="ft14" style="text-decoration: none; display: block;" href="">确认上传</a>*@
+        
+    </div>
+    <div id="alertMessage" class="ft14" style="margin-top: 20px; color: red">
+    </div>
+
+</div>
